@@ -85,3 +85,4 @@ vllm_server_config:
     vllm_model_name: starcoderbase-1b
     api_url: http://127.0.0.1:8000/v1
     api_key: none
+    workers: 16
