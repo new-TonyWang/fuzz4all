@@ -49,6 +49,7 @@ def make_target_with_config(config_dict: Dict[str, Any]) -> Target:
         "template": "fuzzing_with_config_file",
         "config_dict": config_dict,
         "target_name": fuzzing.get("target_name", "target"),
+        "vllm_server_config": config_dict.get("vllm_server_config", None),
     }
 
     print("=== Target Config ===")

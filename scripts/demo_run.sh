@@ -9,16 +9,23 @@ echo "MODEL_NAME: $MODEL_NAME"
 echo "DEVICE: $DEVICE"
 
 if [ "$DEVICE" = "gpu" ]; then
-    python /workspace/Fuzz4All/fuzz.py --config config/cpp_demo.yaml main_with_config \
+    python Fuzz4All/fuzz.py --config config/cpp_demo.yaml main_with_config \
                             --folder outputs/demo/ \
                             --batch_size $BATCH_SIZE \
                             --model_name $MODEL_NAME \
-                            --target /home/gcc-13/bin/g++
+                            --target /usr/bin/g++
+
+elif [ "$DEVICE" = "vllm" ]; then
+    python Fuzz4All/fuzz.py --config config/cpp_demo_vllm.yaml main_with_config \
+                            --folder outputs/demo/ \
+                            --batch_size $BATCH_SIZE \
+                            --model_name $MODEL_NAME \
+                            --target /usr/bin/g++
 else
-    python /workspace/Fuzz4All/fuzz.py --config config/cpp_demo.yaml main_with_config \
+    python Fuzz4All/fuzz.py --config config/cpp_demo.yaml main_with_config \
                             --folder outputs/demo/ \
                             --batch_size $BATCH_SIZE \
                             --model_name $MODEL_NAME \
                             --cpu \
-                            --target /home/gcc-13/bin/g++
+                            --target /usr/bin/g++
 fi

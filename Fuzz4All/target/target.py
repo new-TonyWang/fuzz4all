@@ -57,6 +57,7 @@ class Target(object):
         self.model_name = kwargs["model_name"]
         self.model = None
         self.backend = "huggingface"
+        self.vllm_server_config = kwargs.get("vllm_server_config", None)
         # loggers
         self.g_logger = Logger(self.folder, "log_generation.txt", level=kwargs["level"])
         self.v_logger = Logger(self.folder, "log_validation.txt", level=kwargs["level"])
@@ -218,7 +219,16 @@ class Target(object):
         if self.special_eos is not None:
             eos = eos + [self.special_eos]
 
-        if HAS_OLLAMA and is_ollama_model(model_name):
+        if self.vllm_server_config:
+            self.model = make_model(
+                eos=eos,
+                model_name=model_name,
+                device=self.device,
+                max_length=self.max_length,
+                vllm_server_config=self.vllm_server_config,
+            )
+            self.m_logger.logo("using vllm model backend", level=LEVEL.INFO)
+        elif HAS_OLLAMA and is_ollama_model(model_name):
             self.backend = "ollama"
             self.ollama_model_name = get_ollama_model_name(model_name)
             self.model = None

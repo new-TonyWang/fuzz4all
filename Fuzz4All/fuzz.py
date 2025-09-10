@@ -148,6 +148,7 @@ def cli(ctx, config_file):
     default="",
     help="specific target to run",
 )
+
 def main_with_config(ctx, folder, cpu, batch_size, target, model_name):
     """Run the main using a configuration file."""
     config_dict = ctx.obj["CONFIG_DICT"]
@@ -161,6 +162,10 @@ def main_with_config(ctx, folder, cpu, batch_size, target, model_name):
         config_dict["llm"]["model_name"] = model_name
     if target != "":
         config_dict["fuzzing"]["target_name"] = target
+    # if vllm_model_name != "":
+    #     config_dict["vllm_server_config"]["vllm_model_name"] = vllm_model_name
+    #     config_dict["vllm_server_config"]["api_url"] = api_url
+    #     config_dict["vllm_server_config"]["api_key"] = api_key
     print(config_dict)
 
     target = make_target_with_config(config_dict)
